@@ -37,7 +37,10 @@ public class EmployerTest {
         employee.setName("Test");
         employee.setSalary(BigDecimal.valueOf(1000));
 
-        Mockito.when(employeeRepository.save(employee)).thenReturn(Mono.just(employee));
+
+         Mockito.when(employeeRepository.save(employee)).thenReturn(employee);
+       // Mockito.doReturn(Mono.just(employee)).when(employeeRepository.save())
+
 
         webTestClient.post().uri("/create").contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(employee)).exchange().expectStatus().isCreated();
