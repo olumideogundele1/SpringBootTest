@@ -1,6 +1,7 @@
 package com.olumide.swifttest.service;
 
 import com.olumide.swifttest.Employee;
+import javassist.NotFoundException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -12,5 +13,5 @@ public interface EmployeeService {
 
     Mono<Employee> createOrUpdateEmployee(Employee employee);
 
-    void deleteEmployee(Long id);
+    void deleteEmployee(Long id) throws NotFoundException;
 }
