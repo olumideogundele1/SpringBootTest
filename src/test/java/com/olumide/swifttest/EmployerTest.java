@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
+import reactor.core.publisher.Mono;
 
 import java.math.BigDecimal;
 
@@ -31,12 +32,12 @@ public class EmployerTest {
 
     @Test
     void createTestEmployee(){
-        Employee employee = Mockito.mock(Employee.class);
+        Employee employee = new Employee();
         employee.setId(1L);
         employee.setName("Test");
         employee.setSalary(BigDecimal.valueOf(1000));
 
-        Mockito.doReturn(employee).when(employeeRepository.save(employee)).getId();
+        Mockito.when(employeeRepository.save(employee)).thenReturn(Mono.just(employee));
 
         webTestClient.post().uri("/create").contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(employee)).exchange().expectStatus().isCreated();
