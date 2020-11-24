@@ -41,8 +41,34 @@ public class EmployerTest {
        // Mockito.doReturn(Mono.just(employee)).when(employeeRepository.save())
 
 
-        webTestClient.post().uri("/create").contentType(MediaType.APPLICATION_JSON)
+        webTestClient.post().uri("/employee/create").contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(employee)).exchange().expectStatus().isCreated();
         Mockito.verify(employeeRepository,Mockito.times(1)).save(employee);
+    }
+
+    @Test
+    void testGetEmployeeById(){
+        Employee e = new Employee();
+        e.setId(1L);
+        e.setName("Test");
+        e.setSalary(BigDecimal.valueOf(1000));
+
+        Mockito.when(employeeRepository.getOne(1L)).thenReturn(e);
+
+        webTestClient.get().uri("/employee/get-employee/{id}",1L)
+                .exchange().expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.name").isNotEmpty()
+                .jsonPath("$.id").isEqualTo(1L)
+                .jsonPath("$.name").isEqualTo("Test")
+                .jsonPath("$.salary").isEqualTo(1000);
+
+        Mockito.verify(employeeRepository,Mockito.times(1)).getOne(1L);
+    }
+
+    @Test
+    void testDeleteEmployee(){
+        Employee e = new Employee();
+        e.setId(1L);
     }
 }

@@ -34,6 +34,11 @@ public class EmployeeController {
 
     @GetMapping(value ="/get-employees" )
     public ResponseEntity<Flux<Employee>> getAllEmployees(){
-        return
+        return new ResponseEntity<>(employeeService.getAllEmployees(),HttpStatus.OK);
+    }
+
+    @PutMapping("/update-employees")
+    public ResponseEntity<Mono<Employee>> updateEmployee(@RequestBody Employee e){
+        return new ResponseEntity<>(employeeService.createOrUpdateEmployee(e),HttpStatus.OK);
     }
 }
